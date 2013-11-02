@@ -20,5 +20,8 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/lucas42/cheer-routine.js/issues"
+  },
+  "devDependencies": {
+    "buster": "~0.7.7"
   }
 }
