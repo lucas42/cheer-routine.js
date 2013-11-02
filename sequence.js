@@ -9,24 +9,6 @@ var Person = require("./person.js");
 function Sequence(rawdata) {
 	var data = normaliseData(rawdata);
 
-
-	/**
-	 * Just for backwards compatibility so unit tests can check that things haven't regressed in refactor
-	 * @param {Number} bar Which bar of the music is (must be an integer).
-	 * @param {Number} beat Which beat in the bar
-	 * @returns {array} A list of points in spacetime
-	 */
-	function getPointsByTime(bar, beat) {
-		var actions = getActionsByTime(bar, beat);
-		var id, output = [];
-		for (id in actions) {
-			output.push(actions[id].getRawData());
-		}
-		return output;
-	}
-	this.getPointsByTime = getPointsByTime;
-
-
 	/**
 	 * Returns a list of actions for where every person is at a given time
 	 * @param {Number} bar Which bar of the music is (must be an integer).
