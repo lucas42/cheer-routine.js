@@ -1,6 +1,6 @@
 {
   "name": "cheer-routine.js",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A javascript library for rendering Cheerleading formations.",
   "main": "index.js",
   "scripts": {

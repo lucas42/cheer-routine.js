@@ -60,12 +60,8 @@ function normaliseData(data) {
 		if (!(point.p in output)) {
 			output[point.p] = [];
 		}
-		output[point.p].push({
-			x: point.x,
-			y: point.y,
-			time: beats.normalise(point.bar, point.beat),
-			c: point.c
-		});
+		point.t = beats.normalise(point.bar, point.beat);
+		output[point.p].push(point);
 	}
 
 	// Sort each person's point by time
