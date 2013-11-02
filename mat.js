@@ -12,6 +12,20 @@ function Mat(canvas) {
 		throw "Can only have one routine on the mat at a time";
 	}
 	canvas.setAttribute("data-cheer-routine-inited", true);
+
+	/**
+	 * Renders a list of action objects onto the mat
+	 * @param {object} actions A an object of key value pairs, where key is the person id and value is an Action object
+	 */
+	function renderActions (actions) {
+		var personid;
+		for (personid in actions) {
+
+			// TODO: actually render the points on the mat
+			console.log(personid, actions[personid]);
+		}
+	}
+	this.renderActions = renderActions;
 }
 
 module.exports = Mat;

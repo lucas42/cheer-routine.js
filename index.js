@@ -12,11 +12,12 @@ function Routine(canvas, data) {
 	var mat = new Mat(canvas);
 	var sequence = new Sequence(data);
 
+	/**
+	 * Render the correct actions for a given time in the routine
+	 */
 	function renderTime(bar, beat) {
 		var actions = sequence.getActionsByTime(bar, beat);
-
-		// TODO: actually render the points on the mat
-		console.log(actions);
+		mat.renderActions(actions);
 	}
 
 
