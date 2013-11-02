@@ -1,0 +1,24 @@
+{
+  "name": "cheer-routine.js",
+  "version": "0.0.0",
+  "description": "A javascript library for rendering Cheerleading formations.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/lucas42/cheer-routine.js.git"
+  },
+  "keywords": [
+    "cheerleading",
+    "cheer",
+    "routine",
+    "formations"
+  ],
+  "author": "Luke Blaney",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lucas42/cheer-routine.js/issues"
+  }
+}
