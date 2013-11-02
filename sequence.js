@@ -28,6 +28,24 @@ function Sequence(rawdata) {
 		return actions;
 	}
 	this.getActionsByTime = getActionsByTime;
+
+
+	/**
+	 * Returns a list of all the points in the sequence.  Used so the data can be stored and the sequence/routine recreated later
+	 * @returns {array} A list of all the points
+	 */
+	function getRawData() {
+		var i, l, persondata, output = [];
+		for (personid in data) {
+			persondata = data[personid].getRawData();
+			for (i=0, l=persondata.length; i<l; i++) {
+				persondata[i].p=personid;
+				output.push(persondata[i]);
+			}
+		}
+		return output;
+	}
+	this.getRawData = getRawData;
 }
 
 function normaliseData(data) {

@@ -1,10 +1,8 @@
 
 /**
  * A class representing an individual within the routine and storing all the points they need to be at throughout.
- *
- * @param {number|string} id A uniquie identifier for an individual
  */
- function Person(id) {
+ function Person() {
 
  	/**
  	 * A list of actions which the person perfroms during the routine
@@ -56,6 +54,15 @@
 		return previous;
 	}
 	this.getActionByTime = getActionByTime;
+
+	function getRawData() {
+		var output = [];
+		for (i=0, l=actions.length; i<l; i++) {
+			output.push(actions[i].getRawData());
+		}
+		return output;
+	}
+	this.getRawData = getRawData;
  }
 
  module.exports = Person;
