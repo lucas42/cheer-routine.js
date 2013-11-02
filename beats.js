@@ -22,7 +22,11 @@ function normaliseBeats(bar, beat) {
 	beat = beat - 1;
 
 	// Work out how far through the bar the given beat is.
-	beat = beatsInABar / beat;
+	beat = beat / beatsInABar;
+
+	output += beat;
+
+	return output;
 }
 
 /**
@@ -34,6 +38,9 @@ function denormaliseBeats(time) {
 	var bar = Math.floor(time);
 	var partial = time - bar;
 	var beat = beatsInABar * partial;
+
+	// Add one to the beat because humans start counting at 1
+	beat = beat + 1;
 
 	return {
 		bar: bar,
