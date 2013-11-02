@@ -9,7 +9,7 @@ var beatsInABar = 8;
  * Take a bar number and a beat and normalise them to a float
  * @param {Number} bar Which bar of the music is (must be an integer).
  * @param {Number} beat Which beat in the bar (NB: beats start at 1, not zero for consistency with spoken counts)
- * @param {Number} A float representing the position in music (unit in bars)
+ * @returns {Number} A float representing the position in music (unit in bars)
  */
 function normaliseBeats(bar, beat) {
 	if (beat < 1) throw "Beats in the bar start at 1";
