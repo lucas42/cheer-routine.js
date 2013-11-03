@@ -11,13 +11,23 @@ function Sequence(rawdata) {
 
 	/**
 	 * Returns a list of actions for where every person is at a given time
-	 * @param {Number} bar Which bar of the music is (must be an integer).
-	 * @param {Number} beat Which beat in the bar
-	 * @returns {object} A object containing the action that each person is doing
+	 * @param {number} bar Which bar of the music is (must be an integer).
+	 * @param {number} beat Which beat in the bar
+	 * @returns {object} An object containing the action that each person is doing
 	 */
 	function getActionsByBeat(bar, beat) {
-		var personid, time = beats.normalise(bar, beat);
-		var action, actions = {};
+		var time = beats.normalise(bar, beat);
+		return this.getActionsByTime(time);
+	}
+	this.getActionsByBeat = getActionsByBeat;
+
+	/**
+	 * Returns a list of actions for where every person is at a given time
+	 * @param {number} time A normalised time value (in bars)
+	 * @returns {object} An object containing the action that each person is doing
+	 */
+	function getActionsByTime(time) {
+		var personid, action, actions = {};
 		for (personid in data) {
 			action = data[personid].getActionByTime(time);
 
@@ -27,7 +37,7 @@ function Sequence(rawdata) {
 		}
 		return actions;
 	}
-	this.getActionsByBeat = getActionsByBeat;
+	this.getActionsByTime = getActionsByTime;
 
 	/**
 	 * Returns the last time that any action in this sequence is scheduled for
