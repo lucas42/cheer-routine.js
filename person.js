@@ -55,6 +55,16 @@
 	}
 	this.getActionByTime = getActionByTime;
 
+	/**
+	 * Returns the last time that this person has an action scheduled for
+	 * @returns {number}
+	 */
+	function getMaxTime() {
+		if (!actions.length) return 0;
+		return actions[actions.length-1].getPoint().getTime();
+	}
+	this.getMaxTime = getMaxTime;
+
 	function getRawData() {
 		var output = [];
 		for (i=0, l=actions.length; i<l; i++) {

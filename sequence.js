@@ -29,6 +29,20 @@ function Sequence(rawdata) {
 	}
 	this.getActionsByTime = getActionsByTime;
 
+	/**
+	 * Returns the last time that any action in this sequence is scheduled for
+	 * @returns {number}
+	 */
+	function getMaxTime() {
+		var personid, personmax, max = 0;
+		for (personid in data) {
+			personmax = data[personid].getMaxTime();
+			if (personmax > max) max = personmax;
+		}
+		return max;
+	}
+	this.getMaxTime = getMaxTime;
+
 
 	/**
 	 * Returns a list of all the points in the sequence.  Used so the data can be stored and the sequence/routine recreated later
