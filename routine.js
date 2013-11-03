@@ -11,18 +11,49 @@ var Sequence = require("./sequence.js");
 function Routine(canvas, data) {
 	var mat = new Mat(canvas);
 	var sequence = new Sequence(data);
+	var bpm = 70;
+
+	// Work out the bars per millisecond based on the beats per minute;
+	var barspermillisec = (bpm / 60000) / 8;
 
 	/**
 	 * Render the correct actions for a given time in the routine
 	 */
-	function renderTime(bar, beat) {
-		var actions = sequence.getActionsByBeat(bar, beat);
+	function renderTime(time) {
+		var actions = sequence.getActionsByTime(time);
 		mat.renderActions(actions);
 	}
 
+	var startTimestamp = null;
+	var maxtime = sequence.getMaxTime();
+	function renderFrame(timestamp) {
+		var progress;
+		if (startTimestamp === null) start = timestamp;
+		progress = timestamp - startTimestamp;
 
-	// Begin by rendering the first beat of the first bar.
-	renderTime(1,1);
+		// Convert the progress from milliseconds to bars
+		progress = progress * barspermillisec;
+		renderTime(progress);
+		if (progress <= maxtime) {
+			window.requestAnimationFrame(renderFrame);
+		} else {
+			startTimestamp = null;
+		}
+	}
+
+	/**
+	 * Starts animating the routine
+	 * @returns {boolean} Whether the routine was started (true) or it was already running (false)
+	 */
+	function start() {
+		if (startTimestamp !== null) return false;
+		window.requestAnimationFrame(renderFrame);
+		return true;
+	}
+	this.start = start;
+
+	// Begin with showing the opening positions
+	renderTime(0);
 }
 
 
