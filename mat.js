@@ -80,7 +80,7 @@ function Mat(canvas) {
 	function drawPoint(point) {
 		var x, y, radius;
 		x = point.getX() * scale;
-		y = point.getY() * scale;
+		y = height - (point.getY() * scale);
 		radius = pointRadius + point.getZ();
 		context.fillStyle = pointColor;
 		context.beginPath();
