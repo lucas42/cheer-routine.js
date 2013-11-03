@@ -15,7 +15,7 @@ function Sequence(rawdata) {
 	 * @param {Number} beat Which beat in the bar
 	 * @returns {object} A object containing the action that each person is doing
 	 */
-	function getActionsByTime(bar, beat) {
+	function getActionsByBeat(bar, beat) {
 		var personid, time = beats.normalise(bar, beat);
 		var action, actions = {};
 		for (personid in data) {
@@ -27,7 +27,7 @@ function Sequence(rawdata) {
 		}
 		return actions;
 	}
-	this.getActionsByTime = getActionsByTime;
+	this.getActionsByBeat = getActionsByBeat;
 
 	/**
 	 * Returns the last time that any action in this sequence is scheduled for

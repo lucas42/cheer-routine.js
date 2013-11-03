@@ -16,7 +16,7 @@ function Routine(canvas, data) {
 	 * Render the correct actions for a given time in the routine
 	 */
 	function renderTime(bar, beat) {
-		var actions = sequence.getActionsByTime(bar, beat);
+		var actions = sequence.getActionsByBeat(bar, beat);
 		mat.renderActions(actions);
 	}
 

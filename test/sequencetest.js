@@ -14,7 +14,7 @@ buster.testCase("beats", {
             {x:5, y:1, z:0, bar:2, beat:1, p:"3", c: "roundoff"},
     	];
         sequence = new Sequence(rawdata);
-        actions = sequence.getActionsByTime(1, 1);
+        actions = sequence.getActionsByBeat(1, 1);
 
         buster.assert.equals(actions[1].getRawData().x, 4.5, "Person 1 starts in wrong x position");
         buster.assert.equals(actions[1].getRawData().y, 3.5, "Person 1 starts in wrong y position");
@@ -25,7 +25,7 @@ buster.testCase("beats", {
 
 
 
-        actions = sequence.getActionsByTime(1, 5);
+        actions = sequence.getActionsByBeat(1, 5);
 
         buster.assert.equals(actions[1].getRawData().x, 4.5, "Person 1 moves x position");
         buster.assert.equals(actions[1].getRawData().y, 6, "Person 1 in wrong y position");
@@ -36,7 +36,7 @@ buster.testCase("beats", {
 
 
 
-        actions = sequence.getActionsByTime(2, 1);
+        actions = sequence.getActionsByBeat(2, 1);
 
         buster.assert.equals(actions[1].getRawData().x, 4.5, "Person 1 moves x position");
         buster.assert.equals(actions[1].getRawData().y, 6, "Person 1 moves y position");
