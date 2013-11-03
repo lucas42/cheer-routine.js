@@ -9,6 +9,11 @@ function Action(point, comment) {
 	}
 	this.getTime = getTime;
 
+	function getPoint() {
+		return point;
+	}
+	this.getPoint = getPoint;
+
 	function getRawData() {
 		var data = point.getRawData();
 		data.c = comment;

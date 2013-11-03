@@ -24,6 +24,21 @@ function Point(data) {
 	}
 	this.getTime = getTime;
 
+	function getX() {
+		return data.x;
+	}
+	this.getX = getX;
+
+	function getY() {
+		return data.y;
+	}
+	this.getY = getY;
+
+	function getZ() {
+		return data.z;
+	}
+	this.getZ = getZ;
+
 	function getRawData() {
 		return data;
 	}

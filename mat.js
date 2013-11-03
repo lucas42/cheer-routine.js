@@ -15,6 +15,8 @@ function Mat(canvas) {
 
 	// The colour of the guide lines placed onto the mat
 	var lineColor = "rgb(100, 100, 100)";
+	var pointColor = "rgba(255, 255, 255, 0.8)";
+	var pointRadius = 10;
 	height = 7 * scale;
 	width = 9 * scale;
 
@@ -66,12 +68,25 @@ function Mat(canvas) {
 		var i, personid;
 		renderMat();
 		for (personid in actions) {
-
-			// TODO: actually render the points on the mat
-			console.log(personid, actions[personid]);
+			drawPoint(actions[personid].getPoint());
 		}
 	}
 	this.renderActions = renderActions;
+
+	/**
+	 * Draw a single point on the mat
+	 * @param {Point} point The point to draw
+	 */
+	function drawPoint(point) {
+		var x, y, radius;
+		x = point.getX() * scale;
+		y = point.getY() * scale;
+		radius = pointRadius + point.getZ();
+		context.fillStyle = pointColor;
+		context.beginPath();
+		context.arc(x, y, radius, 0, Math.PI*2, true);
+		context.fill();
+	}
 }
 
 module.exports = Mat;
