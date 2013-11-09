@@ -6,6 +6,8 @@
  */
 function Mat(canvas) {
 	var height, width, context = canvas.getContext("2d");
+	var currentactions = {};
+	var highlightedPerson =  null;
 
 	// Number of pixels which are equivalent to 6 foot in real life;
 	var scale = 100;
@@ -15,7 +17,8 @@ function Mat(canvas) {
 
 	// The colour of the guide lines placed onto the mat
 	var lineColor = "rgb(100, 100, 100)";
-	var pointColor = "rgba(255, 255, 255, 0.8)";
+	var pointColor = "rgb(255, 255, 255)";
+	var highlightPointColor = "rgb(255, 100, 100)";
 	var pointRadius = 10;
 	height = 7 * scale;
 	width = 9 * scale;
@@ -27,6 +30,7 @@ function Mat(canvas) {
 	if (canvas.getAttribute("data-cheer-routine-inited")) {
 		throw "Can only have one routine on the mat at a time";
 	}
+	canvas.addEventListener("click", canvasclick);
 	canvas.setAttribute("data-cheer-routine-inited", true);
 
 	/**
@@ -65,10 +69,12 @@ function Mat(canvas) {
 	 * @param {object} actions An object of key value pairs, where key is the person id and value is an Action object
 	 */
 	function renderActions (actions) {
-		var i, personid;
+		var personid, highlight;
 		renderMat();
+		currentactions = actions;
 		for (personid in actions) {
-			drawPoint(actions[personid].getPoint());
+			highlight = (personid == highlightedPerson);
+			drawPoint(actions[personid].getPoint(), highlight);
 		}
 	}
 	this.renderActions = renderActions;
@@ -76,16 +82,55 @@ function Mat(canvas) {
 	/**
 	 * Draw a single point on the mat
 	 * @param {Point} point The point to draw
+	 * @param {boolean} [highlight] Whether to highlight the point (defaults to false)
 	 */
-	function drawPoint(point) {
+	function drawPoint(point, highlight) {
 		var x, y, radius;
 		x = point.getX() * scale;
 		y = height - (point.getY() * scale);
 		radius = pointRadius + point.getZ();
-		context.fillStyle = pointColor;
+		context.fillStyle = highlight?highlightPointColor:pointColor;
 		context.beginPath();
 		context.arc(x, y, radius, 0, Math.PI*2, true);
 		context.fill();
+	}
+
+	/**
+	 * Returns the id of a person near the coordinates given
+	 * Note: if multiple people are nearby, only one is returned.  (which one isn't defined)
+	 *
+	 * @param {number} x The number of pixels across the canvas
+	 * @param {number} y The number of pixels down the canvas
+	 * @returns {string|null} Returns the id of a person or null if there are no people near the point
+	 */
+	function getPersonIdByCoords(x, y) {
+		var personid, point;
+		var scaledRadius = pointRadius/scale;
+		x = x / scale;
+		y = (height - y) / scale;
+		for (personid in currentactions) {
+			point = currentactions[personid].getPoint();
+			if ((x > point.getX() - scaledRadius)
+				&& (x < point.getX() + scaledRadius)
+				&& (y > point.getY() - scaledRadius)
+				&& (y < point.getY() + scaledRadius)) {
+				return personid;
+			}
+		}
+		return null;
+	}
+
+	function canvasclick(event) {
+		var personid = getPersonIdByCoords(event.offsetX, event.offsetY);
+		if (personid == highlightedPerson) return;
+		if (highlightedPerson) {
+			var oldpoint = currentactions[highlightedPerson].getPoint();
+			drawPoint(oldpoint, false);
+		}
+		highlightedPerson = personid;
+		if (!personid) return;
+		var newpoint = currentactions[personid].getPoint();
+		drawPoint(newpoint, true);
 	}
 }
 
