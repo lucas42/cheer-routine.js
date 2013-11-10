@@ -26,8 +26,11 @@ function Routine(canvas, data) {
 
 	var startTimestamp = null;
 	var maxtime = sequence.getMaxTime();
+	var slider = null;
+	var playing = false;
 	function renderFrame(timestamp) {
 		var progress;
+		if (!playing) return;
 		if (startTimestamp === null) start = timestamp;
 		progress = timestamp - startTimestamp;
 
@@ -39,6 +42,31 @@ function Routine(canvas, data) {
 		} else {
 			startTimestamp = null;
 		}
+		if (slider) slider.value = progress;
+	}
+
+	/**
+	 * Adds controls for playing the routine
+	 * @param {DOMElement} container A DOM element to put all the relevant controls in.
+	 */
+	function addControls(container) {
+		slider = document.createElement('input');
+		slider.type = "range";
+		slider.min = 0;
+		slider.max = maxtime;
+		slider.step = "any";
+		slider.addEventListener("change", sliderMoved);
+		container.appendChild(slider);
+	}
+	this.addControls = addControls;
+
+	function sliderMoved(event) {
+		pause();
+		renderTime(this.value);
+	}
+
+	function pause() {
+		playing = false;
 	}
 
 	/**
@@ -46,7 +74,8 @@ function Routine(canvas, data) {
 	 * @returns {boolean} Whether the routine was started (true) or it was already running (false)
 	 */
 	function start() {
-		if (startTimestamp !== null) return false;
+		if (playing) return false;
+		playing = true;
 		window.requestAnimationFrame(renderFrame);
 		return true;
 	}
