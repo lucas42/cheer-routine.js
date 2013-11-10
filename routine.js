@@ -54,7 +54,9 @@ function Routine(canvas, data) {
 		slider.type = "range";
 		slider.min = 0;
 		slider.max = maxtime;
-		slider.step = "any";
+
+		// Snap to the nearest beat
+		slider.step = 1/8;
 		slider.addEventListener("change", sliderMoved);
 		container.appendChild(slider);
 	}

@@ -41,7 +41,7 @@ function Sequence(rawdata) {
 
 	/**
 	 * Returns the last time that any action in this sequence is scheduled for
-	 * @returns {number}
+	 * @returns {number} max time (in bars)
 	 */
 	function getMaxTime() {
 		var personid, personmax, max = 0;
