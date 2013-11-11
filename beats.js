@@ -48,5 +48,16 @@ function denormaliseBeats(time) {
 	};
 }
 
+function getBarsPerMillisecond(beatsPerMinute) {
+	var beatsperMillisecond = beatsPerMinute / 60000;
+	var barsPerMillisecond = convertBeatsToBars(beatsperMillisecond);
+	return barsPerMillisecond;
+}
+function convertBeatsToBars(beats) {
+	return beats / beatsInABar;
+}
+
 module.exports.normalise = normaliseBeats;
 module.exports.denormalise = denormaliseBeats;
+module.exports.getBarsPerMillisecond = getBarsPerMillisecond;
+module.exports.convertBeatsToBars = convertBeatsToBars;

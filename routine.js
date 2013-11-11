@@ -1,5 +1,6 @@
 var Mat = require("./mat.js");
 var Sequence = require("./sequence.js");
+var beats = require("./beats.js");
 
 /**
  * An object representing a complete routine
@@ -14,7 +15,7 @@ function Routine(canvas, data) {
 	var bpm = 70;
 
 	// Work out the bars per millisecond based on the beats per minute;
-	var barspermillisec = (bpm / 60000) / 8;
+	var barspermillisec = beats.getBarsPerMillisecond(bpm);
 
 	/**
 	 * Render the correct actions for a given time in the routine
@@ -56,7 +57,7 @@ function Routine(canvas, data) {
 		slider.max = maxtime;
 
 		// Snap to the nearest beat
-		slider.step = 1/8;
+		slider.step = beats.convertBeatsToBars(1);
 		slider.addEventListener("change", sliderMoved);
 		container.appendChild(slider);
 	}
