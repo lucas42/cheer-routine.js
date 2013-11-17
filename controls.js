@@ -21,13 +21,9 @@ function Controls(container, animation) {
 	container.appendChild(addPlayPauseButton);
 
 	var editable = false;
-	var editor = new Editor();
+	var editor = new Editor(animation);
+	container.appendChild(editor.form);
 	this.canvasclick = editor.canvasclick;
-	var addActionButton = document.createElement('input');
-	addActionButton.type = 'button';
-	addActionButton.addEventListener("click", editor.newAction);
-	addActionButton.value = "Add Action";
-	container.appendChild(addActionButton);
 
 	update();
 
@@ -53,7 +49,7 @@ function Controls(container, animation) {
 		// Snap to the nearest beat
 		slider.step = beats.convertBeatsToBars(1);
 		slider.value = animation.getCurrentTime();
-		addActionButton.style.display = editable?'block':"none";
+		editor.form.style.display = editable?'block':"none";
 		addPlayPauseButton.value = animation.isPlaying()?"Pause":"Play";
 	}
 	this.update = update;
