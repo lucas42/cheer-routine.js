@@ -3,7 +3,7 @@ var buster = require("buster");
 // The unit under test
 var Sequence = require("../sequence.js");
 
-buster.testCase("beats", {
+buster.testCase("sequence", {
     "Test getting points by time": function () {
     	var actions, sequence, rawdata = [
             {x:4.5, y:3.5, z:0, bar:1, beat:1, p:"1", c: "stand"},
@@ -44,6 +44,12 @@ buster.testCase("beats", {
         buster.assert.equals(actions[2].getRawData().y, 1, "Person 2 in wrong y position");
         buster.assert.equals(actions[3].getRawData().x, 5, "Person 3 moves x position");
         buster.assert.equals(actions[3].getRawData().y, 1, "Person 3 in wrong y position");
+
+        var actionsByTime = sequence.getActionsByTime(2);
+        buster.assert.equals(actionsByTime, actions, "Different actions returned when requested by Beat and by Time");
+
+        var maxTime = sequence.getMaxTime();
+        buster.assert.equals(maxTime, 2, "Wrong max time returned");
 
         var actualdata = sequence.getRawData();
 
