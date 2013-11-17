@@ -28,14 +28,14 @@ function Controls(container, routine) {
 	update();
 
 	function sliderMoved(event) {
-		routine.setCurrentTime(this.value);
+		routine.getAnimation().setCurrentTime(this.value);
 	}
 
 	function playPause(event) {
 		if (this.value == "Play") {
-			routine.play();
+			routine.getAnimation().play();
 		} else {
-			routine.pause();
+			routine.getAnimation().pause();
 		}
 	}
 
@@ -48,13 +48,13 @@ function Controls(container, routine) {
 	 */
 	function update() {
 		slider.min = 0;
-		slider.max = routine.getMaxTime();
+		slider.max = routine.getAnimation().getMaxTime();
 
 		// Snap to the nearest beat
 		slider.step = beats.convertBeatsToBars(1);
-		slider.value = routine.getCurrentTime();
+		slider.value = routine.getAnimation().getCurrentTime();
 		addActionButton.style.display = routine.isEditable?'block':"none";
-		addPlayPauseButton.value = routine.isPlaying()?"Pause":"Play";
+		addPlayPauseButton.value = routine.getAnimation().isPlaying()?"Pause":"Play";
 	}
 	this.update = update;
 }
