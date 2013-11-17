@@ -44,7 +44,7 @@ buster.testCase("beats", {
             480000: 1,
         }
         for (var i in cases) {
-            buster.assert.equals(cases[i], beats.getBarsPerMillisecond(i), "Incorrect beats per minute to bars per millisecond conversion");
+            buster.assert.equals(beats.getBarsPerMillisecond(i), cases[i], "Incorrect beats per minute to bars per millisecond conversion");
         }
     },
     "Test beats in a bar": function () {
@@ -55,7 +55,7 @@ buster.testCase("beats", {
             800: 100,
         }
         for (var i in cases) {
-            buster.assert.equals(cases[i], beats.convertBeatsToBars(i), "Incorrect beats to bars conversion");
+            buster.assert.equals(beats.convertBeatsToBars(i), cases[i], "Incorrect beats to bars conversion");
         }
 
     }
