@@ -36,5 +36,27 @@ buster.testCase("beats", {
 	        buster.assert.equals(actual.bar, c.bar, "Incorrect denormalisation of bar numbers");
 	        buster.assert.equals(actual.beat, c.beat, "Incorrect denormalisation of beat numbers");
 	    }
+    },
+    "Test bars per millisecond": function () {
+        var cases = {
+            0: 0,
+            60: 0.000125,
+            480000: 1,
+        }
+        for (var i in cases) {
+            buster.assert.equals(cases[i], beats.getBarsPerMillisecond(i), "Incorrect beats per minute to bars per millisecond conversion");
+        }
+    },
+    "Test beats in a bar": function () {
+        var cases = {
+            0: 0,
+            8: 1,
+            10: 1.25,
+            800: 100,
+        }
+        for (var i in cases) {
+            buster.assert.equals(cases[i], beats.convertBeatsToBars(i), "Incorrect beats to bars conversion");
+        }
+
     }
 });
