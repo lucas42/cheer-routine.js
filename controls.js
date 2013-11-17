@@ -1,11 +1,12 @@
 var beats = require("./beats.js");
+var Editor = require("./editor.js");
 
 /**
  * A class responsible for manage controls in the DOM
  * @param {DOMElement} container A DOM element to put all the relevant controls in.
- * @param {Routine} The routine the controls are to manage
+ * @param {Animation} The animation to control
  */
-function Controls(container, routine) {
+function Controls(container, animation) {
 	if (container.nodeType != 1) throw "Container must be an element node";
 
 	var slider = document.createElement('input');
@@ -19,23 +20,25 @@ function Controls(container, routine) {
 	addPlayPauseButton.addEventListener("click", playPause);
 	container.appendChild(addPlayPauseButton);
 
+	var editable = false;
 	var addActionButton = document.createElement('input');
 	addActionButton.type = 'button';
 	addActionButton.addEventListener("click", addAction);
 	addActionButton.value = "Add Action";
 	container.appendChild(addActionButton);
+	var editor = new Editor();
 
 	update();
 
 	function sliderMoved(event) {
-		routine.getAnimation().setCurrentTime(this.value);
+		animation.setCurrentTime(this.value);
 	}
 
 	function playPause(event) {
 		if (this.value == "Play") {
-			routine.getAnimation().play();
+			animation.play();
 		} else {
-			routine.getAnimation().pause();
+			animation.pause();
 		}
 	}
 
@@ -48,15 +51,25 @@ function Controls(container, routine) {
 	 */
 	function update() {
 		slider.min = 0;
-		slider.max = routine.getAnimation().getMaxTime();
+		slider.max = animation.getMaxTime();
 
 		// Snap to the nearest beat
 		slider.step = beats.convertBeatsToBars(1);
-		slider.value = routine.getAnimation().getCurrentTime();
-		addActionButton.style.display = routine.isEditable?'block':"none";
-		addPlayPauseButton.value = routine.getAnimation().isPlaying()?"Pause":"Play";
+		slider.value = animation.getCurrentTime();
+		addActionButton.style.display = editable?'block':"none";
+		addPlayPauseButton.value = animation.isPlaying()?"Pause":"Play";
 	}
 	this.update = update;
+
+	/**
+	 * Sets whether or not the routine should be editable by the user
+	 * @param {boolean} isEditable Whether the user should be able to edit the routine
+	 */
+	function setEditable(isEditable) {
+		editable = isEditable;
+		update();
+	}
+	this.setEditable = setEditable;
 }
 
 module.exports = Controls;

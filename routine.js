@@ -19,16 +19,14 @@ function Routine(canvas, data) {
 	 */
 	function addControls(container) {
 		var Controls = require('./controls');
-		var controls = new Controls(container, this);
+		var controls = new Controls(container, animation);
 		animation.setUpdateFunc(controls.update);
+		this.setEditable = controls.setEditable;
 	}
 	this.addControls = addControls;
-	this.isEditable = false;
 
-	function getAnimation() {
-		return animation;
-	}
-	this.getAnimation = getAnimation;
+	this.play = animation.play;
+	this.pause = animation.pause;
 }
 
 
