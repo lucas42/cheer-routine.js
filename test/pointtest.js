@@ -13,7 +13,10 @@ buster.testCase("point", {
             beat: 5,
             unknown_param: "foobar"
         };
-        var point = new Point(rawdata);
+        
+        // Make a copy so class can't modify object unexpectedly
+        var rawdatacopy = JSON.parse(JSON.stringify(rawdata));
+        var point = new Point(rawdatacopy);
 
         buster.assert.equals(point.getX(), 4, "Wrong X Value");
         buster.assert.equals(point.getY(), 5.5, "Wrong Y Value");
