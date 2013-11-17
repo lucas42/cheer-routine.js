@@ -21,12 +21,13 @@ function Controls(container, animation) {
 	container.appendChild(addPlayPauseButton);
 
 	var editable = false;
+	var editor = new Editor();
+	this.canvasclick = editor.canvasclick;
 	var addActionButton = document.createElement('input');
 	addActionButton.type = 'button';
-	addActionButton.addEventListener("click", addAction);
+	addActionButton.addEventListener("click", editor.newAction);
 	addActionButton.value = "Add Action";
 	container.appendChild(addActionButton);
-	var editor = new Editor();
 
 	update();
 
@@ -40,10 +41,6 @@ function Controls(container, animation) {
 		} else {
 			animation.pause();
 		}
-	}
-
-	function addAction(event) {
-		alert("TODO");
 	}
 
 	/**

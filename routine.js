@@ -22,6 +22,7 @@ function Routine(canvas, data) {
 		var controls = new Controls(container, animation);
 		animation.setUpdateFunc(controls.update);
 		this.setEditable = controls.setEditable;
+		canvas.addEventListener("click", controls.canvasclick);
 	}
 	this.addControls = addControls;
 

@@ -89,7 +89,6 @@ function Animation(sequence, mat) {
 	function playFrom(time) {
 		window.requestAnimationFrame(function(timestamp) {
 			startTimestamp = timestamp - (time / barspermillisec);
-			console.log(startTimestamp);
 			renderFrame(timestamp);
 		});
 

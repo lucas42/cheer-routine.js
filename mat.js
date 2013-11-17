@@ -99,15 +99,13 @@ function Mat(canvas) {
 	 * Returns the id of a person near the coordinates given
 	 * Note: if multiple people are nearby, only one is returned.  (which one isn't defined)
 	 *
-	 * @param {number} x The number of pixels across the canvas
-	 * @param {number} y The number of pixels down the canvas
+	 * @param {number} x The distance across the mat (In units of 6 feet)
+	 * @param {number} y The distance up the mat (In units of 6 feet)
 	 * @returns {string|null} Returns the id of a person or null if there are no people near the point
 	 */
 	function getPersonIdByCoords(x, y) {
 		var personid, point;
 		var scaledRadius = pointRadius/scale;
-		x = x / scale;
-		y = (height - y) / scale;
 		for (personid in currentactions) {
 			point = currentactions[personid].getPoint();
 			if ((x > point.getX() - scaledRadius)
@@ -121,17 +119,20 @@ function Mat(canvas) {
 	}
 
 	function canvasclick(event) {
-		var personid = getPersonIdByCoords(event.offsetX, event.offsetY);
-		if (personid == highlightedPerson) return;
+		event.normalisedX = event.offsetX / scale;
+		event.normalisedY = (height - event.offsetY) / scale;
+		event.personid = getPersonIdByCoords(event.normalisedX, event.normalisedY);
+		if (event.personid == highlightedPerson) return;
 		if (highlightedPerson) {
 			var oldpoint = currentactions[highlightedPerson].getPoint();
 			drawPoint(oldpoint, false);
 		}
-		highlightedPerson = personid;
-		if (!personid) return;
-		var newpoint = currentactions[personid].getPoint();
+		highlightedPerson = event.personid;
+		if (!event.personid) return;
+		var newpoint = currentactions[event.personid].getPoint();
 		drawPoint(newpoint, true);
 	}
+
 }
 
 module.exports = Mat;
