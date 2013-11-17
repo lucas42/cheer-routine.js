@@ -20,7 +20,6 @@ function Routine(canvas, data) {
 
 	var startTimestamp = null;
 	var maxtime = sequence.getMaxTime();
-	var playing = false;
 	var currentTime = 0;
 
 	/**
@@ -31,11 +30,10 @@ function Routine(canvas, data) {
 		mat.renderActions(actions);
 		if (controls) controls.update();
 	}
+
 	function renderFrame(timestamp) {
-		var progress;
-		if (!playing) return;
-		if (startTimestamp === null) start = timestamp;
-		progress = timestamp - startTimestamp;
+		var progress = timestamp - startTimestamp;
+		if (!isPlaying()) return;
 
 		// Convert the progress from milliseconds to bars
 		currentTime = progress * barspermillisec;
@@ -43,7 +41,7 @@ function Routine(canvas, data) {
 		if (currentTime <= maxtime) {
 			window.requestAnimationFrame(renderFrame);
 		} else {
-			startTimestamp = null;
+			pause();
 		}
 	}
 
@@ -52,9 +50,12 @@ function Routine(canvas, data) {
 	 * @param {number} time The normalised time in bars
 	 */
 	function setCurrentTime(time) {
-		pause();
+		console.log(time);
 		currentTime = time;
 		renderCurrentTime();
+
+		// If the routine is playing, call the play function again, to update startTimestamp
+		if (isPlaying()) playFrom(currentTime);
 	}
 	this.setCurrentTime = setCurrentTime;
 
@@ -83,21 +84,37 @@ function Routine(canvas, data) {
 	this.addControls = addControls;
 
 	function pause() {
-		playing = false;
+		startTimestamp = null;
+		if (controls) controls.update();
 	}
+	this.pause = pause;
 	this.isEditable = false;
 
 	/**
-	 * Starts animating the routine (from the start)
-	 * @returns {boolean} Whether the routine was started (true) or it was already running (false)
+	 * Starts animating the routine from the currentTime
 	 */
-	function start() {
-		if (playing) return false;
-		playing = true;
-		window.requestAnimationFrame(renderFrame);
-		return true;
+	function play() {
+		if (!isPlaying()) playFrom(currentTime);
 	}
-	this.start = start;
+	this.play = play;
+
+	/**
+	 * Play from a specific time (passing in a time, rather than just using currentTime means queued frames won't override it)
+	 * @param {number} time A normalised time in bars
+	 */
+	function playFrom(time) {
+		window.requestAnimationFrame(function(timestamp) {
+			startTimestamp = timestamp - (time / barspermillisec);
+			console.log(startTimestamp);
+			renderFrame(timestamp);
+		});
+
+	}
+
+	function isPlaying() {
+		return startTimestamp !== null;
+	}
+	this.isPlaying = isPlaying;
 
 	// Begin with showing the opening positions
 	renderCurrentTime();

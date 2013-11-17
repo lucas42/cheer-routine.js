@@ -13,18 +13,33 @@ function Controls(container, routine) {
 	slider.addEventListener("change", sliderMoved);
 	container.appendChild(slider);
 
+
+	var addPlayPauseButton = document.createElement('input');
+	addPlayPauseButton.type = 'button';
+	addPlayPauseButton.addEventListener("click", playPause);
+	container.appendChild(addPlayPauseButton);
+
 	var addActionButton = document.createElement('input');
 	addActionButton.type = 'button';
 	addActionButton.addEventListener("click", addAction);
 	addActionButton.value = "Add Action";
 	container.appendChild(addActionButton);
+
 	update();
 
 	function sliderMoved(event) {
 		routine.setCurrentTime(this.value);
 	}
 
-	function addAction() {
+	function playPause(event) {
+		if (this.value == "Play") {
+			routine.play();
+		} else {
+			routine.pause();
+		}
+	}
+
+	function addAction(event) {
 		alert("TODO");
 	}
 
@@ -39,6 +54,7 @@ function Controls(container, routine) {
 		slider.step = beats.convertBeatsToBars(1);
 		slider.value = routine.getCurrentTime();
 		addActionButton.style.display = routine.isEditable?'block':"none";
+		addPlayPauseButton.value = routine.isPlaying()?"Pause":"Play";
 	}
 	this.update = update;
 }
