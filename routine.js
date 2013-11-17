@@ -18,17 +18,19 @@ function Routine(canvas, data) {
 	var barspermillisec = beats.getBarsPerMillisecond(bpm);
 	var controls = null;
 
-	/**
-	 * Render the correct actions for a given time in the routine
-	 */
-	function renderTime(time) {
-		var actions = sequence.getActionsByTime(time);
-		mat.renderActions(actions);
-	}
-
 	var startTimestamp = null;
 	var maxtime = sequence.getMaxTime();
 	var playing = false;
+	var currentTime = 0;
+
+	/**
+	 * Render the correct actions for a given time in the routine
+	 */
+	function renderCurrentTime() {
+		var actions = sequence.getActionsByTime(currentTime);
+		mat.renderActions(actions);
+		if (controls) controls.update();
+	}
 	function renderFrame(timestamp) {
 		var progress;
 		if (!playing) return;
@@ -36,26 +38,34 @@ function Routine(canvas, data) {
 		progress = timestamp - startTimestamp;
 
 		// Convert the progress from milliseconds to bars
-		progress = progress * barspermillisec;
-		renderTime(progress);
-		if (progress <= maxtime) {
+		currentTime = progress * barspermillisec;
+		renderCurrentTime();
+		if (currentTime <= maxtime) {
 			window.requestAnimationFrame(renderFrame);
 		} else {
 			startTimestamp = null;
 		}
-		if (controls) controls.setTime(progress);
 	}
 
 	/**
 	 * Sets the current point in time of the routine
 	 * @param {number} time The normalised time in bars
 	 */
-	function setTime(time) {
-		// TODO: remember the current time
+	function setCurrentTime(time) {
 		pause();
-		renderTime(time);
+		currentTime = time;
+		renderCurrentTime();
 	}
-	this.setTime = setTime;
+	this.setCurrentTime = setCurrentTime;
+
+	/**
+	 * Gets the current point in time of the routine
+	 * @returns {number} The normalised time in bars
+	 */
+	function getCurrentTime(time) {
+		return currentTime;
+	}
+	this.getCurrentTime = getCurrentTime;
 
 	function getMaxTime() {
 		return sequence.getMaxTime();
@@ -75,6 +85,7 @@ function Routine(canvas, data) {
 	function pause() {
 		playing = false;
 	}
+	this.isEditable = false;
 
 	/**
 	 * Starts animating the routine (from the start)
@@ -89,7 +100,7 @@ function Routine(canvas, data) {
 	this.start = start;
 
 	// Begin with showing the opening positions
-	renderTime(0);
+	renderCurrentTime();
 }
 
 

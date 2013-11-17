@@ -10,23 +10,37 @@ function Controls(container, routine) {
 
 	var slider = document.createElement('input');
 	slider.type = "range";
-	slider.min = 0;
-	slider.max = routine.getMaxTime();
-
-	// Snap to the nearest beat
-	slider.step = beats.convertBeatsToBars(1);
 	slider.addEventListener("change", sliderMoved);
 	container.appendChild(slider);
 
+	var addActionButton = document.createElement('input');
+	addActionButton.type = 'button';
+	addActionButton.addEventListener("click", addAction);
+	addActionButton.value = "Add Action";
+	container.appendChild(addActionButton);
+	update();
 
 	function sliderMoved(event) {
-		routine.setTime(this.value);
+		routine.setCurrentTime(this.value);
 	}
 
-	function setTime(time) {
-		slider.value = time;
+	function addAction() {
+		alert("TODO");
 	}
-	this.setTime = setTime;
+
+	/**
+	 * Updates controls to match any variables which may have changed
+	 */
+	function update() {
+		slider.min = 0;
+		slider.max = routine.getMaxTime();
+
+		// Snap to the nearest beat
+		slider.step = beats.convertBeatsToBars(1);
+		slider.value = routine.getCurrentTime();
+		addActionButton.style.display = routine.isEditable?'block':"none";
+	}
+	this.update = update;
 }
 
 module.exports = Controls;
